@@ -1,4 +1,4 @@
-module github.com/assaidy/unit-converter
+module github.com/assaidy/unit-converter/old-cli
 
 go 1.22.5
 

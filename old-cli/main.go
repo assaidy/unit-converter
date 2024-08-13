@@ -10,12 +10,12 @@ import (
 )
 
 var section string
-var unitFrom, unitTo string
+var fromUnit, toUnit string
 var value string
 var amount float64
 var units = map[string][]string{
-	"length":      {"meters", "kilometers", "miles", "centimeters", "millimeters", "inches"},
-	"weight":      {"grams", "kilograms", "pounds", "ounces", "milligrams"},
+	"length":      {"meter", "kilometer", "mile", "centimeter", "millimeter", "inche", "foot", "yard"},
+	"weight":      {"gram", "kilogram", "pound", "ounce", "milligram"},
 	"temperature": {"celsius", "fahrenheit", "kelvin"},
 }
 
@@ -28,7 +28,7 @@ func main() {
 				Title("Section"),
 
 			huh.NewSelect[string]().
-				Value(&unitFrom).
+				Value(&fromUnit).
 				Height(8).
 				Title("Convert from").
 				OptionsFunc(func() []huh.Option[string] {
@@ -37,7 +37,7 @@ func main() {
 				}, &section),
 
 			huh.NewSelect[string]().
-				Value(&unitTo).
+				Value(&toUnit).
 				Height(8).
 				Title("Convert to").
 				OptionsFunc(func() []huh.Option[string] {
@@ -59,14 +59,14 @@ func main() {
 	}
 
 	// handling conversion
-	res := handleConvert(amount, unitFrom, unitTo)
+	res := handleConvert(amount, fromUnit, toUnit)
 
 	fmt.Println("section:", section)
 	fmt.Printf("%.3f %s = %.3f %s\n",
 		amount,
-		unitFrom,
+		fromUnit,
 		res,
-		unitTo,
+		toUnit,
 	)
 }
 
@@ -95,6 +95,8 @@ func convertLength(a float64, from, to string) float64 {
 		"centimeters": 0.01,
 		"millimeters": 0.001,
 		"inches":      0.0254,
+		"yard":        0.9144,
+		"foot":        0.3048,
 	}
 
 	meters := a * conversions[from]
